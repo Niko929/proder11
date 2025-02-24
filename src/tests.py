@@ -1,10 +1,5 @@
-from src.widget import get_mask_card_number
-from src.widget import get_mask_account
-from src.widget import mask_account_card
-from src.widget import get_date
-from src.processing import filter_by_state
-from src.processing import sort_by_date
-
+from src.processing import filter_by_state, sort_by_date
+from src.widget import get_date, get_mask_account, get_mask_card_number, mask_account_card
 
 print(get_mask_card_number(1548745985216125))
 print(get_mask_card_number(1545248788843157))

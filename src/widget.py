@@ -1,7 +1,8 @@
-from src.masks import get_mask_card_number
-from src.masks import get_mask_account
 import datetime
 from typing import Any
+
+from src.masks import get_mask_account, get_mask_card_number
+
 title = "Visa Platinum", "Maestro", "MasterCard", "Visa Classic", "Visa Gold"
 
 
@@ -26,7 +27,7 @@ def mask_account_card(name_card: Any) -> Any:
         return "Не правильно введены значения"
 
 
-def get_date(pippppp:Any) -> str:
+def get_date(pippppp: Any) -> str:
     date_format = datetime.datetime.strptime(pippppp, "%Y-%m-%dT%H:%M:%S.%f")
     new_date = date_format.strftime("%d.%m.%Y")
     return new_date
