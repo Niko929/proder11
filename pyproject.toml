@@ -20,6 +20,7 @@ flake8 = "^7.1.1"
 black = "^25.1.0"
 isort = "^6.0.0"
 mypy = "^1.15.0"
+pytest-cov = "^6.0.0"
 
 [tool.mypy]
 disallow_untyped_defs = true
@@ -52,4 +53,5 @@ exclude = '''
 line_length = 119
 
 [tool.poetry.group.link.dependencies]
+pytest = "^8.3.4"
 

@@ -15,14 +15,14 @@ def mask_account_card(name_card: Any) -> Any:
                 text_card += ter
             if ter.isdigit():
                 nomer_card += ter
-        return f"{text_card} {get_mask_card_number(int(nomer_card))} "
+        return f"{text_card} {get_mask_card_number(int(nomer_card))}"
     elif name_card.startswith("Счет"):
         for ter in name_card:
             if ter.isalpha():
                 text_card += ter
             if ter.isdigit():
                 nomer_card += ter
-        return f"{text_card} {get_mask_account(int(nomer_card))} "
+        return f"{text_card} {get_mask_account(int(nomer_card))}"
     else:
         return "Не правильно введены значения"
 
