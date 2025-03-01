@@ -13,3 +13,6 @@ git clone https://github.com/username/project-x.git
 ```
 pip install -r requirements.txt
 ```
+## Тестирование:
+
+В папке tests_1 в каждой отдельной папке, написен код ,который тестирует каждую функцию для проверки
