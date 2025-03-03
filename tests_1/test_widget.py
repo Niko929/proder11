@@ -22,3 +22,11 @@ def test_get_date(date_1 , date_2):
 )
 def test_mask_account_card(parat1, parat2):
     assert mask_account_card(parat1) == parat2
+
+
+@pytest.fixture
+def test_fun1():
+    return "Счет **5898"
+
+def test_mask(test_fun1):
+    assert mask_account_card('Счет 15487459861254495898') == test_fun1
