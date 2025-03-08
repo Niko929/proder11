@@ -1,4 +1,3 @@
-from typing import Any, Dict, List
 import pytest
 from src.processing import filter_by_state, sort_by_date
 
@@ -52,5 +51,5 @@ def test_filter_by_state(h, h1):
         ),
     ],
 )
-def test_filter_1(g: list[dict], g1: list[dict]) -> List[Dict]:
+def test_filter_1(g, g1):
     assert sort_by_date(g) == g1

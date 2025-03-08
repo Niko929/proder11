@@ -1,5 +1,4 @@
-
-from typing import Any, Dict, List
+from typing import Dict, List
 import random
 
 transactions = [
@@ -52,25 +51,20 @@ transactions = [
 
 
 def filter_by_currency(transaction, name="USD"):
-    #  fer =[]
-    #   for x in transaction:
-    #       if x["operationAmount"]["currency"]["name"] == name:
-    #           fer.append(x)
-    return [x for x in transaction if x["operationAmount"]["currency"]["name"] == name]
+    return (x for x in transaction if x["operationAmount"]["currency"]["name"] == name)
 
 
-
-def transaction_descriptions(transactio, description="description"):
-    destr = []
-    for l in transactio:
-       if description in l:
-         destr.append(l["description"])
-    return destr
-
-        # return F'{l["description"]}'
+def transaction_descriptions(transactions: List[Dict]):
+    if not transactions:
+        raise ValueError("Список транзакций пуст")
+    if "description" not in ["description" for x in transactions if "description" in x]:
+        raise ValueError("Описание транзакции отсутствует")
+    for transaction in transactions:
+        yield transaction["description"]
 
 
-def card_number_generator(g=0000000000000000, gt=9999999999999999):
+def card_number_generator(g=000000000000000, gt=9999999999999999):
     hty = random.randint(g, gt)
     gtt = str(hty)
-    return f"{gtt[:4]} {gtt[4:8]} {gtt[8:12]} {gtt[12:]}"
+    if len(gtt) == 16:
+      yield f"{gtt[:4]} {gtt[4:8]} {gtt[8:12]} {gtt[12:]}"
