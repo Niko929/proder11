@@ -3,11 +3,14 @@ import pytest
 from src.widget import get_date, mask_account_card
 
 
-@pytest.mark.parametrize("date_1 , date_2",[
-    ("2024-03-11T02:26:18.671407" , "11.03.2024"),
-    ("2025-03-11T02:26:18.671407" , "11.03.2025"),
-])
-def test_get_date(date_1 , date_2):
+@pytest.mark.parametrize(
+    "date_1 , date_2",
+    [
+        ("2024-03-11T02:26:18.671407", "11.03.2024"),
+        ("2025-03-11T02:26:18.671407", "11.03.2025"),
+    ],
+)
+def test_get_date(date_1, date_2):
     assert get_date(date_1) == date_2
 
 
@@ -28,5 +31,6 @@ def test_mask_account_card(parat1, parat2):
 def test_fun1():
     return "Счет **5898"
 
+
 def test_mask(test_fun1):
-    assert mask_account_card('Счет 15487459861254495898') == test_fun1
+    assert mask_account_card("Счет 15487459861254495898") == test_fun1

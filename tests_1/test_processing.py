@@ -2,6 +2,7 @@ from typing import Any, Dict, List
 import pytest
 from src.processing import filter_by_state, sort_by_date
 
+
 @pytest.mark.parametrize(
     "h , h1",
     [
@@ -30,6 +31,7 @@ from src.processing import filter_by_state, sort_by_date
 )
 def test_filter_by_state(h, h1):
     assert filter_by_state(h) == h1
+
 
 @pytest.mark.parametrize(
     "g , g1",
