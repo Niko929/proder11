@@ -1,6 +1,7 @@
 from src.processing import filter_by_state, sort_by_date
 from src.widget import get_date, get_mask_account, get_mask_card_number, mask_account_card
 from src.gener import filter_by_currency, card_number_generator, transaction_descriptions
+from src.decorators import log
 
 print(get_mask_card_number(1548745985216125))
 print(get_mask_card_number(1545248788843157))
@@ -149,3 +150,11 @@ print(
         )
     )
 )
+
+
+@log(function="my.txt")
+def my_function(x, y):
+    return x + y
+
+
+my_function(1, 74)

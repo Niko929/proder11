@@ -1,5 +1,5 @@
 import pytest
-from src.gener import filter_by_currency, transaction_descriptions , card_number_generator
+from src.gener import filter_by_currency, transaction_descriptions
 
 
 @pytest.mark.parametrize(
@@ -152,6 +152,3 @@ def test_cer(cer, cer1):
 )
 def test_gt(cre, cer2):
     assert list(transaction_descriptions(cre)) == cer2
-
-
-

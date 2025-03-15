@@ -63,8 +63,8 @@ def transaction_descriptions(transactions: List[Dict]):
         yield transaction["description"]
 
 
-def card_number_generator(g=000000000000000, gt=9999999999999999):
+def card_number_generator(g=0000000000000000, gt=9999999999999999):
     hty = random.randint(g, gt)
     gtt = str(hty)
     if len(gtt) == 16:
-      yield f"{gtt[:4]} {gtt[4:8]} {gtt[8:12]} {gtt[12:]}"
+        yield f"{gtt[:4]} {gtt[4:8]} {gtt[8:12]} {gtt[12:]}"
