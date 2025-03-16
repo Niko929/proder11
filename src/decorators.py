@@ -1,28 +1,28 @@
 from functools import wraps
 
 
-def log(function):
+def log(function = None):
+    """
+       Декоратор для логирования выполнения функций.
+       """
     def her(fun):
         @wraps(fun)
         def ytr(*args, **kwargs):
             try:
                 result = fun(*args, **kwargs)
-                if function is not None:
+                """Если файл написал, то значения записывает в него, если нет то запись выходит в консоль """
+                if function:
                     with open(function, "a") as file:
-                        file.write(f"{fun.__name__} ok")
-                    print(f"{fun.__name__} ok")
+                        file.write(f"\n{fun.__name__} ok")
                 else:
                     print(f"{fun.__name__} ok")
                 return result
             except Exception as r:
-                if function is not None:
+                if function:
                     with open(function, "a") as file:
-                        file.write(f"{fun.__name__} error: {type(r)}. Inputs:{args}")
-                    print(f"{fun.__name__} error: {r}. Inputs:{args}")
+                        file.write(f"\n{fun.__name__} error: {type(r)}. Inputs:{args}")
                 else:
                     print(f"{fun.__name__} error: {r}. Inputs:{args}")
                 raise r
-
         return ytr
-
     return her
