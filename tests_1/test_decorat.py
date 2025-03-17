@@ -10,3 +10,11 @@ def test_log(Any):
 
     result = my_function(1, 5)
     assert result == 6
+
+
+@pytest.mark.parametrize('fr,fr2',[
+    (1,2),('my_function ok'),
+])
+
+def test_dever(fr,fr2):
+    assert log(fr) == fr2
