@@ -1,0 +1,9 @@
+
+some_func error: <class 'TypeError'>. Inputs:(1, '2')
+some_func error: <class 'TypeError'>. Inputs:(1, '2')
+some_func error: <class 'TypeError'>. Inputs:(1, '2')
+some_func error: <class 'TypeError'>. Inputs:(1, '2')
+some_func error: <class 'TypeError'>. Inputs:(1, '2')
+some_func error: <class 'TypeError'>. Inputs:(1, '2')
+some_func error: <class 'TypeError'>. Inputs:(1, '2')
+some_func error: <class 'TypeError'>. Inputs:(1, '2')
