@@ -2,7 +2,7 @@ from src.processing import filter_by_state, sort_by_date
 from src.widget import get_date, get_mask_account, get_mask_card_number, mask_account_card
 from src.gener import filter_by_currency, card_number_generator, transaction_descriptions
 from src.decorators import log
-from src.utils import bar
+from src.utils import load_transactions, convert_to_rub
 
 
 print(get_mask_card_number(1548745985216125))
@@ -161,4 +161,5 @@ def my_function(x, y):
 
 my_function(1, "1")
 
-print(bar('data/operations.json'))
+
+print(load_transactions("../data/operations.json"))
