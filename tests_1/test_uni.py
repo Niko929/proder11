@@ -21,16 +21,19 @@ ex = {
         "from": "MasterCard 7158300734726758",
         "to": "Счет 35383033474447895560"
     }
-# @mock.patch('builtins.open', new_ly = mock.mock_open,read_data = 'operations.json')
-# def test_load_transactions(mock_file):
-#     file_name = '../data/operations.json'  # Укажите путь к файлу
-#     res_ccf = load_transactions(file_name)
-#     assert res_ccf == {'key': 'value'}
 
-# @patch('data')
-# def test_load_transactions(mock_file):
-#     mock_file.return_value = {'key': 'value'}
-#     assert load_transactions() == {'key': 'value'}
+
+@patch('bar.load_from_file')  # Укажите правильный путь к функции, которую хотите замокировать
+def test_load_transactions(self, mock_load_from_file):
+        # Настройка возвращаемого значения для замокированной функции
+        mock_load_from_file.return_value = {'key': 'value'}
+
+        # Вызов тестируемой функции
+        result = load_transactions()
+
+        # Проверка результата
+        assert result == {'key': 'value'}
+
 
 
 

@@ -12,7 +12,7 @@ def get_mask_account(personal_account: int) -> str:
         logging.info(nomber_card_number)
         return nomber_card_number
     else:
-        logging.info(f"Не правильно gg ")
+        logging.error(f"Не правильно gg ")
         return "Не правильно"
 
 
