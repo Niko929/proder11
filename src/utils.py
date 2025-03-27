@@ -49,7 +49,7 @@ def convert_transaction_to_rub(transaction: dict) -> float:
         # Получаем курс обмена
         exchange_rate = data['rates']['RUB']
         amount_in_rub = amount * exchange_rate
-        print(f"Сумма в рублях: {amount_in_rub:.2f} RUB")
+        return amount_in_rub
     else:
         print("Ошибка при получении данных обмена:", response.status_code)
 
