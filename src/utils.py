@@ -3,6 +3,8 @@ import os
 import requests
 from dotenv import load_dotenv
 import logging
+load_dotenv()  # Загружаем переменные окружения из .env
+API_KEY = os.getenv("EXCHANGE_API_KEY")
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
@@ -22,21 +24,12 @@ def load_transactions(bar=None):
             return []
 
 
-import os
-import requests
-from dotenv import load_dotenv
 
-# Загружаем переменные окружения из .env
 
-load_dotenv()  # Загружаем переменные окружения из .env
-
-API_KEY = os.getenv("EXCHANGE_API_KEY")
+print(API_KEY)
 BASE_URL = "https://api.apilayer.com/exchangerates_data"
 
-
 def convert_transaction_to_rub(transaction: dict) -> float:
-    # Ваш API ключ
-    API_KEY = 'YOUR_API_KEY'  # Замените YOUR_API_KEY на ваш реальный API ключ
 
     # Получаем сумму и валюту из словаря
     amount = float(transaction["operationAmount"]["amount"])
@@ -55,17 +48,13 @@ def convert_transaction_to_rub(transaction: dict) -> float:
 
     # Проверяем статус ответа
     if currency_code == "RUB":
-        logging.info(amount)
         return amount
     elif response.status_code == 200:
         data = response.json()
         # Получаем курс обмена
         exchange_rate = data['rates']['RUB']
         amount_in_rub = amount * exchange_rate
-        logging.info(f"Сумма в рублях: {amount_in_rub:.2f} RUB")
-        print(f"Сумма в рублях: {amount_in_rub:.2f} RUB")
+        return f"Сумма в рублях: {amount_in_rub:.2f} RUB"
     else:
-        logging.error(f"Ошибка при получении данных обмена:", response.status_code)
-        print("Ошибка при получении данных обмена:", response.status_code)
-
+        return f"Ошибка при получении данных обмена:", {response.status_code}
 

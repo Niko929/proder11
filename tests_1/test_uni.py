@@ -1,11 +1,8 @@
-from unittest import mock
-from unittest.mock import mock_open
-import os
+import pytest
+from unittest.mock import mock_open, patch
+import json
+import logging
 from src.utils import load_transactions
-from unittest.mock import patch
-
-
-
 ex = {
         "id": 41428829,
         "state": "EXECUTED",
@@ -23,27 +20,54 @@ ex = {
     }
 
 
-@patch('bar.load_from_file')  # Укажите правильный путь к функции, которую хотите замокировать
-def test_load_transactions(self, mock_load_from_file):
-        # Настройка возвращаемого значения для замокированной функции
-        mock_load_from_file.return_value = {'key': 'value'}
+# Тест для успешной загрузки данных
+def test_load_transactions_success():
+    test_data = {"transactions": [{"id": 1, "amount": 100}]}
+    json_data = json.dumps(test_data)
 
-        # Вызов тестируемой функции
-        result = load_transactions()
+    with patch("builtins.open", mock_open(read_data=json_data)) as mock_file:
+        result = load_transactions("test.json")
 
-        # Проверка результата
-        assert result == {'key': 'value'}
+        # Проверяем что файл был открыт
+        mock_file.assert_called_once_with("test.json", "r", encoding="utf-8")
+        # Проверяем результат
+        assert result == test_data
 
 
+# Тест для случая с пустым путем (bar=None)
+def test_load_transactions_empty_path():
+    result = load_transactions()
+    assert result == []
 
 
-from unittest.mock import patch
-import random
+# Тест для обработки ошибки при чтении файла
+def test_load_transactions_file_error():
+    with patch("builtins.open", mock_open()) as mock_file:
+        mock_file.side_effect = Exception("File error")
 
-def get_random_number():
-    return random.randint(0, 10)
+        result = load_transactions("invalid.json")
+        assert result == []
 
-@patch('random.randint')
-def test_get_random_number(mock_random):
-    mock_random.return_value = 5
-    assert get_random_number() == 5
+
+# Тест для кривого JSON
+def test_load_transactions_invalid_json():
+    with patch("builtins.open", mock_open(read_data="invalid json")) as mock_file:
+        result = load_transactions("bad.json")
+        assert result == []
+
+
+# Проверка логов
+def test_load_transactions_logging(caplog):
+    test_data = {"transactions": [{"id": 1, "amount": 100}]}
+    json_data = json.dumps(test_data)
+
+    with patch("builtins.open", mock_open(read_data=json_data)):
+        with caplog.at_level(logging.INFO):
+            load_transactions("test.json")
+            assert "пустой список" not in caplog.text
+            assert str(test_data) in caplog.text
+
+    with patch("builtins.open", side_effect=Exception("Error")):
+        with caplog.at_level(logging.ERROR):
+            load_transactions("error.json")
+            assert "пустой список" in caplog.text
