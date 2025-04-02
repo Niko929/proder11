@@ -12,18 +12,18 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(level
 
 def load_transactions(bar=None):
     """Загружает транзакции из JSON-файла."""
-    with open(bar, "r", encoding="utf-8") as file:
-        try:
-            if bar:
+    if bar:
+        with open(bar, "r", encoding="utf-8") as file:
+            try:
                 data = json.load(file)
                 logging.info(data)
                 return data
-            else:
-                logging.info("пустой список")
+            except Exception:
+                logging.error("пустой список")
                 return []
-        except Exception:
-            logging.error("пустой список")
-            return []
+    else:
+        logging.info("пустой список")
+        return []
 
 
 print(API_KEY)

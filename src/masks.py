@@ -26,5 +26,5 @@ def get_mask_card_number(personal_card: int) -> str:
         logging.info(nomber_card_numbe)
         return nomber_card_numbe
     else:
-        logging.info(f"Не правильно")
+        logging.error(f"Не правильно")
         return f"Не правильно"
