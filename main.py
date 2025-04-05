@@ -2,7 +2,9 @@
 from datetime import datetime
 
 from src.utils import load_transactions
+from src.gener import filter_by_currency
 from src.trans import tabl_nreg,tabl_ger
+from src.processing import sort_by_date,filter_by_state
 
 
 print(
@@ -11,14 +13,14 @@ print(
 2. Получить информацию о транзакциях из CSV-файла
 3. Получить информацию о транзакциях из XLSX-файла"""
 )
-ger = input("Введите цифру:")
-if ger == "1":
+user_choice = input("Введите цифру:")
+if user_choice == "1":
     transactions = load_transactions("data/operations.json")
     print("Для обработки выбран JSON-файл")
-elif ger == "2":
+elif user_choice == "2":
         transactions = tabl_nreg("data/transactions.csv")
         print("Для обработки выбран CSV-файл")
-elif ger == "3":
+elif user_choice == "3":
         transactions = tabl_ger("data/transactions_excel.xlsx")
         print("Для обработки выбран XLSX-файл")
 else:
@@ -26,43 +28,45 @@ else:
     transactions = load_transactions("data/operations.json")
 print("""Введите статус, по которому необходимо выполнить фильтрацию. 
         Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING""")
-her = input("Введите статус:")
-HER = her.upper()
-if HER in ["EXECUTED", "CANCELED", "PENDING"]:
-    print(f"Операции отфильтрованы по статусу {HER}")
-    filtrter = [req for req in transactions if req.get('state') == HER]
+state = input("Введите статус:").upper()
+if state in ["EXECUTED", "CANCELED", "PENDING"]:
+    print(f"Операции отфильтрованы по статусу {state}")
+    transactions = filter_by_state(transactions,state)
 else:
-    print(f"Некорректный статус{HER}")
+    print(f"Некорректный статус{state}")
 
 
 print("Отсортировать операции по дате? Да/Нет")
-answer = input()
-if answer == "Да":
+answer = input().lower()
+if answer == "да":
     print("Отсортировать по возрастанию или по убыванию? Да/Нет")
-    gerhtar = input()
-    if gerhtar == "Да":
-        otfil = sorted(filtrter, key=lambda x: datetime.strptime(x["date"], "%Y-%m-%d"), reverse=False)
-    elif gerhtar == "Нет":
-        otfil = sorted(filtrter, key=lambda x: datetime.strptime(x["date"], "%Y-%m-%d"), reverse=True)
-elif answer == "Нет":
-      otfil = filtrter
+    reverse = input().lower()
+    if reverse == "да":
+        transactions = sort_by_date(transactions, reverse=False)
+    elif reverse == "Нет":
+        transactions = sort_by_date(transactions)
+elif answer == "нет":
+    transactions = transactions
 
 # Фильтрация только рублевых транзакций
+
 print("Выводить только рублевые транзакции? Да/Нет")
-terfrf = input()
-if terfrf == "Да":
-    fhry = [gft for gft in otfil if gft.get("operationAmount", {}).get("currency", {}).get("code") == 'RUB']
+trans= input().lower()
+if trans == "Да":
+    filtered_rub_transactions = filter_by_currency(transactions == "RUB")
 else:
-    fhry = otfil
+    filtered_rub_transactions = transactions
+
 
 # Фильтрация по слову в описании (если требуется)
 print("Отфильтровать список транзакций по определенному слову в описании? Да/Нет")
-gdb = input()
-if gdb == "Да":
-    keyword = input("Введите слово для фильтрации: ")
-    sorturovrf = [gft1 for gft1 in fhry if keyword.lower() in gft1.get('description', '').lower()]
+filtering = input().lower()
+if filtering == "Да":
+    keyword = input("Введите слово для фильтрации: ").lower()
+    filtered_transactions = [t for t in filtered_rub_transactions if keyword.lower() in t.get('description', '').lower()]
 else:
-    sorturovrf = fhry
+    filtered_transactions = filtered_rub_transactions
+
 
 # Вывод результатов
-print(sorturovrf)
+print(filtered_transactions)

@@ -50,8 +50,8 @@ transactions = [
 ]
 
 
-def filter_by_currency(transaction, name="USD"):
-    return (x for x in transaction if x["operationAmount"]["currency"]["name"] == name)
+def filter_by_currency(transaction):
+    return (x for x in transaction if x["operationAmount"]["currency"]["code"] == "USD")
 
 
 def transaction_descriptions(transactions: List[Dict]):
