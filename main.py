@@ -1,10 +1,11 @@
-#import json
-from datetime import datetime
+# import json
+#from datetime import datetime
 
 from src.utils import load_transactions
 from src.gener import filter_by_currency
-from src.trans import tabl_nreg,tabl_ger
-from src.processing import sort_by_date,filter_by_state
+from src.trans import tabl_nreg, tabl_ger
+from src.processing import sort_by_date, filter_by_state
+from src.banr import filter_operations_by_description
 
 
 print(
@@ -18,20 +19,22 @@ if user_choice == "1":
     transactions = load_transactions("data/operations.json")
     print("Для обработки выбран JSON-файл")
 elif user_choice == "2":
-        transactions = tabl_nreg("data/transactions.csv")
-        print("Для обработки выбран CSV-файл")
+    transactions = tabl_nreg("data/transactions.csv")
+    print("Для обработки выбран CSV-файл")
 elif user_choice == "3":
-        transactions = tabl_ger("data/transactions_excel.xlsx")
-        print("Для обработки выбран XLSX-файл")
+    transactions = tabl_ger("data/transactions_excel.xlsx")
+    print("Для обработки выбран XLSX-файл")
 else:
     # если пользователь выбрал что-то некорректно, то по умолчанию можно открыть JSON-файл
     transactions = load_transactions("data/operations.json")
-print("""Введите статус, по которому необходимо выполнить фильтрацию. 
-        Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING""")
+print(
+    """Введите статус, по которому необходимо выполнить фильтрацию. 
+        Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING"""
+)
 state = input("Введите статус:").upper()
 if state in ["EXECUTED", "CANCELED", "PENDING"]:
     print(f"Операции отфильтрованы по статусу {state}")
-    transactions = filter_by_state(transactions,state)
+    transactions = filter_by_state(transactions, state)
 else:
     print(f"Некорректный статус{state}")
 
@@ -51,9 +54,9 @@ elif answer == "нет":
 # Фильтрация только рублевых транзакций
 
 print("Выводить только рублевые транзакции? Да/Нет")
-trans= input().lower()
+trans = input().lower()
 if trans == "Да":
-    filtered_rub_transactions = filter_by_currency(transactions == "RUB")
+    filtered_rub_transactions = list(filter_by_currency(transactions))
 else:
     filtered_rub_transactions = transactions
 
@@ -61,12 +64,13 @@ else:
 # Фильтрация по слову в описании (если требуется)
 print("Отфильтровать список транзакций по определенному слову в описании? Да/Нет")
 filtering = input().lower()
-if filtering == "Да":
+if filtering == "да":
     keyword = input("Введите слово для фильтрации: ").lower()
-    filtered_transactions = [t for t in filtered_rub_transactions if keyword.lower() in t.get('description', '').lower()]
+    filtered_transactions = filter_operations_by_description(filtered_rub_transactions, keyword)
 else:
     filtered_transactions = filtered_rub_transactions
 
 
-# Вывод результатов
-print(filtered_transactions)
+for t in filtered_transactions:
+    print(f"{t['date']} {t['description']}")
+    print(f"Сумма: {t['operationAmount']['amount']} {t['operationAmount']['currency']['name']}\n")

@@ -5,20 +5,14 @@ import logging
 from src.utils import load_transactions, API_KEY, convert_transaction_to_rub
 
 ex = {
-        "id": 41428829,
-        "state": "EXECUTED",
-        "date": "2019-07-03T18:35:29.512364",
-        "operationAmount": {
-            "amount": "8221.37",
-            "currency": {
-                "name": "USD",
-                "code": "USD"
-            }
-        },
-        "description": "Перевод организации",
-        "from": "MasterCard 7158300734726758",
-        "to": "Счет 35383033474447895560"
-    }
+    "id": 41428829,
+    "state": "EXECUTED",
+    "date": "2019-07-03T18:35:29.512364",
+    "operationAmount": {"amount": "8221.37", "currency": {"name": "USD", "code": "USD"}},
+    "description": "Перевод организации",
+    "from": "MasterCard 7158300734726758",
+    "to": "Счет 35383033474447895560",
+}
 
 
 # Тест для успешной загрузки данных
@@ -45,7 +39,6 @@ def test_load_transactions_empty_path():
 def test_load_transactions_file_error():
     with patch("builtins.open", mock_open()) as mock_file:
 
-
         result = load_transactions("invalid.json")
         assert result == []
 
@@ -68,27 +61,19 @@ def test_load_transactions_logging(caplog):
             assert "пустой список" not in caplog.text
             assert str(test_data) in caplog.text
 
+
 def test_convert_transaction_to_rub_success():
     # Тестовые данные
-    transaction = {
-        "operationAmount": {
-            "amount": 100,
-            "currency": {
-                "code": "USD"
-            }
-        }
-    }
+    transaction = {"operationAmount": {"amount": 100, "currency": {"code": "USD"}}}
 
     # Мокируем ответ от API
     mock_response_data = {
-        "rates": {
-            "RUB": 75.0  # Предположим, что курс USD к RUB равен 75
-        },
+        "rates": {"RUB": 75.0},  # Предположим, что курс USD к RUB равен 75
         "base": "USD",
-        "date": "2023-10-01"
+        "date": "2023-10-01",
     }
 
-    with patch('requests.get') as mock_get:
+    with patch("requests.get") as mock_get:
         # Настраиваем мок для возврата нужного ответа
         mock_get.return_value.status_code = 200
         mock_get.return_value.json.return_value = mock_response_data
@@ -97,8 +82,7 @@ def test_convert_transaction_to_rub_success():
 
         # Проверяем, что запрос был выполнен с правильным URL и заголовками
         mock_get.assert_called_once_with(
-            f"https://api.apilayer.com/exchangerates_data/latest?base=USD&symbols=RUB",
-            headers={"apikey": API_KEY}
+            f"https://api.apilayer.com/exchangerates_data/latest?base=USD&symbols=RUB", headers={"apikey": API_KEY}
         )
 
         # Проверяем результат конвертации
