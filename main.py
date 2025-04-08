@@ -6,7 +6,7 @@ from src.gener import filter_by_currency
 from src.trans import tabl_nreg, tabl_ger
 from src.processing import sort_by_date, filter_by_state
 from src.banr import filter_operations_by_description
-
+from src.widget import get_date, mask_account_card
 
 print(
     """Привет! Добро пожаловать в программу работы с банковскими транзакциями. Выберите необходимый пункт меню:
@@ -72,5 +72,26 @@ else:
 
 
 for t in filtered_transactions:
-    print(f"{t['date']} {t['description']}")
-    print(f"Сумма: {t['operationAmount']['amount']} {t['operationAmount']['currency']['name']}\n")
+    from_date = get_date(t['date'])
+    if 'from' in t:
+        ker1 = mask_account_card(t["from"])
+    else:
+        ker1 = "Информация о 'from' отсутствует."
+    if 'to' in t:
+        ker2 = mask_account_card(t["to"])
+    else:
+        ker2 = "Информация о 'to' отсутствует."
+
+    if t["description"] == "Открытие вклада":
+        print(f"{from_date} {t['description']}")
+        print(ker2)
+        print(f"Сумма: {t['operationAmount']['amount']} {t['operationAmount']['currency']['name']}\n")
+    else:
+        print(f"{from_date} {t['description']}")
+        print(f"{ker1} -> {ker2}")
+        print(f"Сумма: {t['operationAmount']['amount']} {t['operationAmount']['currency']['name']}\n")
+
+
+
+
+
