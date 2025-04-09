@@ -1,6 +1,6 @@
 # import json
 #from datetime import datetime
-
+from src.descriction import count_operations_by_category, count_operations
 from src.utils import load_transactions
 from src.gener import filter_by_currency
 from src.trans import tabl_nreg, tabl_ger
@@ -91,7 +91,12 @@ for t in filtered_transactions:
         print(f"{ker1} -> {ker2}")
         print(f"Сумма: {t['operationAmount']['amount']} {t['operationAmount']['currency']['name']}\n")
 
+category = ["Открытие вклада","Перевод со счета на счет","Перевод организации", "Перевод с карты на карту", ]
+print(count_operations_by_category(filtered_transactions,category))
 
+total_operations = count_operations(filtered_transactions)
 
-
-
+if total_operations > 0:
+        print(f"Найдено {total_operations} транзакций.")
+else:
+        print("Не найдено ни одной транзакции.")

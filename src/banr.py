@@ -15,12 +15,3 @@ def filter_operations_by_description(operations, search_string):
     ]
 
     return filtered
-
-
-# Пример использования
-# operations_data = load_transactions("../data/operations.json")
-#
-# search_term = "перевод"
-# filtered_results = filter_operations_by_description(operations_data, search_term)
-#
-# print(filtered_results)
