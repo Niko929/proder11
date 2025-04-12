@@ -1,18 +1,13 @@
+from collections import Counter
+
 def count_operations_by_category(transactions, categories):
-    # Инициализируем словарь для хранения результатов
+    transactions_descriptions = [
+        transaction.get("description", "")
+        for transaction in transactions
+        if transaction.get("description", "") in categories
+    ]
+    return dict(Counter(transactions_descriptions))
 
-    category_count = {category: 0 for category in categories}
-
-
-    # Проходим по всем транзакциям
-    for transaction in transactions:
-        description = transaction.get("description")
-
-        # Если описание операции находится в списке категорий, увеличиваем счетчик
-        if description in category_count:
-            category_count[description] += 1
-
-    return category_count
 
 
 def count_operations(transactions):
