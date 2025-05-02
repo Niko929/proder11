@@ -6,6 +6,18 @@ class Product:
 
     def __repr__(self):
         return f"Product(name={self.name}, price={self.price}, quantity={self.quantity})"
+
+    def __str__(self):
+        return f"{self.name}, {self.price} руб. Остаток:{self.quantity} "
+
+    def __add__(self, other):
+        if isinstance(other, Product):
+            total_price = (self.price * self.quantity) + (other.price * other.quantity)
+            total_quantity = self.quantity + other.quantity
+            # Создаем новый объект Product с суммарной стоимостью и количеством
+            return Product("Суммарный товар", total_price / total_quantity if total_quantity > 0 else 0, total_quantity)
+        return NotImplemented
+
     @classmethod
     def new_product(cls, product_info: dict):
         """Создает новый объект Product из словаря с информацией о товаре."""
@@ -15,6 +27,9 @@ class Product:
 
         if name is None or price is None or quantity is None:
             raise ValueError("Все параметры (name, price, quantity) должны быть указаны.")
+
+        return cls(name, price, quantity)
+
 
 
 
@@ -47,20 +62,38 @@ class Category:
         return (f"Category(name={self.name}, description={self.description}, "
                 f"total products={len(self.__products)})")
 
+    def __str__(self):
+        return f"{self.name}, количество продуктов:{self.description} "
+
 
 product_data = {
     'name': 'Смартфон',
     'price': 500.00,
     'quantity': 5
 }
+product_data1 = {
+    'name': 'Смартфон',
+    'price': 500.00,
+    'quantity': 5
+}
 
+product1 = Product.new_product(product_data1)
+
+product_data2 = {
+    'name': 'Планшет',
+    'price': 300.00,
+    'quantity': 3
+}
+product2 = Product.new_product(product_data2)
 # Создаем новый продукт с помощью класса-метода
 new_product = Product.new_product(product_data)
 
 # Создаем категорию и добавляем продукт
-electronics_category = Category("Электроника", "Устройства и гаджеты")
+electronics_category = Category("Электроника", 4)
 electronics_category.add_product(new_product)
 
 # Вывод информации о категории с товарами
 print(electronics_category)  # Вывод информации о категории
 print(electronics_category.list_products())
+total_product = product1 + product2
+print(total_product)
