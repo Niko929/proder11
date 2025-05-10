@@ -43,12 +43,26 @@ class Category:
     def __init__(self, name: str, description: str):
         self.name = name
         self.description = description
-        self.products = []  # Приватный атрибут для хранения списка товаров
+        self.__products = []  # Приватный атрибут для хранения списка товаров
 
 
 
 
         Category.total_categories += 1
+
+    def average_price(self):
+        if not self.products:
+            return 0  # Если товаров нет, возвращаем 0
+
+        total_price = sum(product.price for product in self.products)
+        total_quantity = sum(product.quantity for product in self.products)
+
+        try:
+            average = total_price / total_quantity
+        except ZeroDivisionError:
+            return 0  # Если сумма товаров равна 0, возвращаем 0
+
+        return average
 
     def add_product(self, product: Product):
         if isinstance(product, Product):
@@ -116,13 +130,13 @@ class LawnGrass(Product):
 
 product_data = {
     'name': 'Смартфон',
-    'price': 500.00,
-    'quantity': 5
+    'price': 0,
+    'quantity': 0
 }
 product_data1 = {
     'name': 'Смартфон',
-    'price': 500.00,
-    'quantity': 5
+    'price': 0,
+    'quantity': 0
 }
 
 product1 = Product.new_product(product_data1)
@@ -137,7 +151,7 @@ product2 = Product.new_product(product_data2)
 new_product = Product.new_product(product_data)
 
 # Создаем категорию и добавляем продукт
-electronics_category = Category("Электроника", 4)
+electronics_category = Category(0, 0)
 electronics_category.add_product(new_product)
 
 # Вывод информации о категории с товарами
