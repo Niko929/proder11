@@ -1,15 +1,22 @@
 
 class Exception_Value(Exception):
+    name = 0
+    price = 0
+    quantity = 0
 
 
-    def __init__(self, name, quantity):
-        if quantity <= 0:
+    def __init__(self, name, quantity,price):
+        if name is None or price is None or quantity is None:
           raise ValueError("Товар с нулевым количеством не может быть добавлен")
+        else:
+            print("0")
         self.name = name
         self.quantity = quantity
+        self.price = price
+
 
 
 try:
-    product = Exception_Value("Товар1", 0)
+    product = Exception_Value( "dd", 0,0)
 except ValueError as e:
     print(e)
