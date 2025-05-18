@@ -1,4 +1,3 @@
-
 class Exception_Value(Exception):
     name = 0
     price = 0
